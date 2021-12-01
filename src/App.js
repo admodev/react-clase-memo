@@ -1,25 +1,51 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
 
-function App() {
+import DisplayFruitName from "./components/DisplayFruitName";
+
+import "./App.css";
+
+export default function App() {
+  const fruits = ["pera", "manzana", "banana"];
+  const [fruitName, setFruitName] = useState("");
+  const [searchedFruit, setSearchedFruit] = useState(
+    "Busca tu fruta preferida!"
+  );
+  const [count, setCount] = useState(0);
+
+  const searchFruitName = () => {
+    if (fruits.includes(fruitName)) {
+      setSearchedFruit(fruitName);
+    } else {
+      setSearchedFruit("No se encontraron frutas...");
+    }
+
+    setCount(count + 1);
+  };
+
+  const showAllFruits = () => {
+    return fruits.map((fruit, index) => {
+      return (
+        <span key={index} className="fruitName">
+          {fruit}
+        </span>
+      );
+    });
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h3>Count: {count}</h3>
+      <div className="fruits">{showAllFruits()}</div>
+      <div>
+        <input
+          type="text"
+          placeholder="Buscar..."
+          onChange={(event) => setFruitName(event.target.value)}
+          value={fruitName}
+        />
+        <button onClick={searchFruitName}>Buscar</button>
+      </div>
+      <DisplayFruitName searchedFruitName={searchedFruit} />
     </div>
   );
 }
-
-export default App;
